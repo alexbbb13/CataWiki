@@ -93,10 +93,10 @@ class CatsGridFragment: BaseFragment(), CatsGridView {
         progressBar.visibility = visible.toVisibility()
     }
 
-    override fun startViewImage(id: String) {
+    override fun startViewImage(catId: String) {
         activity?.let {
             it.supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, CatsGridFragment())
+                .replace(R.id.fragment_container, CatInfoFragment.getInstance(catId))
                 .addToBackStack("cat_image")
                 .commit()
         }

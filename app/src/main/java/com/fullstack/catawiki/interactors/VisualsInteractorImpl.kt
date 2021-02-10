@@ -24,7 +24,7 @@ class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, pr
     private fun dtoToData(catsList: List<CatResponseItem>): List<CatItem> {
         return catsList.map {
             CatItem(
-                it.id,
+                it?.referenceImageId?:it.image?.id?:"NoImageIdAtAll",
                 it.name,
                 it.description,
                 it.image?.url)

@@ -1,6 +1,7 @@
 package com.fullstack.catawiki.di
 
 import com.fullstack.catawiki.di.screens.FragmentsModule
+import com.fullstack.catawiki.fragments.CatInfoFragment
 import com.fullstack.catawiki.fragments.CatsGridFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -15,4 +16,7 @@ internal abstract class FragmentBuilder {
 
     @ContributesAndroidInjector(modules = [FragmentsModule::class])
     abstract fun bindCatsGridFragment(): CatsGridFragment
+
+    @ContributesAndroidInjector(modules = [FragmentsModule::class])
+    abstract fun bindCatInfoFragment(): CatInfoFragment
 }
