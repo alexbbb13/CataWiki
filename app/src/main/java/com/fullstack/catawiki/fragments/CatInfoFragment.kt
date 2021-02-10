@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -44,6 +46,7 @@ class CatInfoFragment : BaseFragment(), CatInfoView {
     lateinit var catTitle: TextView
     lateinit var catDescription: TextView
     lateinit var progressBar: ProgressBar
+    lateinit var toolbar: Toolbar
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -57,6 +60,13 @@ class CatInfoFragment : BaseFragment(), CatInfoView {
         catTitle = root.findViewById(R.id.tv_cat_name)
         catDescription = root.findViewById(R.id.tv_cat_description)
         presenter.loadImages(arguments?.getSerializable(ARGS) as Arguments)
+        // Find the toolbar view inside the activity layout
+        toolbar = root.findViewById(R.id.toolbar) as Toolbar
+        // Sets the Toolbar to act as the ActionBar for this Activity window.
+        // Make sure the toolbar exists in the activity and is not null
+        toolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
         return root
     }
 
@@ -66,6 +76,7 @@ class CatInfoFragment : BaseFragment(), CatInfoView {
 
     override fun setCatName(name: String) {
         catTitle.text = name
+        toolbar.title = name
     }
 
     override fun setCatInfo(info: String) {
