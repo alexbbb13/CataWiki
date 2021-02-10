@@ -96,7 +96,7 @@ class CatsGridFragment: BaseFragment(), CatsGridView {
     override fun startViewImage(catId: String) {
         activity?.let {
             it.supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, CatInfoFragment.getInstance(catId))
+                .add(R.id.fragment_container, CatInfoFragment.getInstance(catId))
                 .addToBackStack("cat_image")
                 .commit()
         }

@@ -32,4 +32,16 @@ class MainActivity : DaggerAppCompatActivity() {
                 (fragment as BaseFragment.FragmentStateListener).onFragmentStateChanged(fragmentState)
             }
     }
+
+    override fun onBackPressed() {
+
+        val count = supportFragmentManager.backStackEntryCount
+
+        if (count == 1) {
+            finish()
+            //additional code
+        } else {
+            supportFragmentManager.popBackStack()
+        }
+    }
 }
