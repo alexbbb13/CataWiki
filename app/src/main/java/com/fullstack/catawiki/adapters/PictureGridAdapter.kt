@@ -45,7 +45,9 @@ class PictureGridAdapter(val myDataset: MutableList<CatItem>, val listener: Item
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = myDataset[position]
-        Glide.with(holder.imageView).load(item.pictureUrl).into(holder.imageView).clearOnDetach()
+        item.pictureUrl?.let{
+            Glide.with(holder.imageView).load(it).into(holder.imageView).clearOnDetach()
+        }
     }
 
      interface ItemClickListener {

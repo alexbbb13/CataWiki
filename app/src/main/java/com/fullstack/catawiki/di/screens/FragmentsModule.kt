@@ -1,4 +1,4 @@
-package com.fullstack.catawiki.di
+package com.fullstack.catawiki.di.screens
 
 import com.fullstack.catawiki.interactors.VisualsInteractor
 import com.fullstack.catawiki.presenters.CatsGridPresenter

@@ -27,7 +27,7 @@ class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, pr
                 it.id,
                 it.name,
                 it.description,
-                it.image.url)
+                it.image?.url)
         }
     }
 

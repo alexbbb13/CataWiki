@@ -8,10 +8,10 @@ import retrofit2.http.*
 interface RxCatawikiApi {
 
     @Headers("Content-Type: application/json")
-    @GET("v2/sbp/settings/getTransferStatus")
+    @GET("v1/breeds")
     fun getAllVisuals(): Observable<List<CatResponseItem>>
 
     @Headers("Content-Type: application/json")
-    @GET("v2/sbp/settings/switchTransferStatus/{id}")
-    fun getOneVisual(@Path("id") catId:String):Observable<CatImageResponse>
+    @GET("v1/images/{image_id}")
+    fun getOneVisual(@Path("image_id") catId:String):Observable<CatImageResponse>
 }
