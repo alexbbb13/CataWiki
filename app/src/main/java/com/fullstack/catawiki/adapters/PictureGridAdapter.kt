@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.fullstack.catawiki.R
@@ -24,6 +25,7 @@ class PictureGridAdapter(val myDataset: MutableList<CatItem>, val listener: Item
         }
 
         val imageView: ImageView = v.findViewById(R.id.grid_image)
+        val catName: TextView = v.findViewById(R.id.tv_cat_name)
         init {
             v.setOnLongClickListener(this)
             v.setOnClickListener(this)
@@ -48,6 +50,7 @@ class PictureGridAdapter(val myDataset: MutableList<CatItem>, val listener: Item
         item.pictureUrl?.let{
             Glide.with(holder.imageView).load(it).into(holder.imageView).clearOnDetach()
         }
+        holder.catName.text = item.name
     }
 
      interface ItemClickListener {
