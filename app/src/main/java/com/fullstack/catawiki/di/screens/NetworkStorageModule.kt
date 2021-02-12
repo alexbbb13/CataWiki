@@ -1,6 +1,5 @@
 package com.fullstack.catawiki.di.screens
 
-import android.content.Context
 import com.fullstack.catawiki.Constants
 import com.fullstack.catawiki.api.RxCatawikiApi
 import com.fullstack.catawiki.interactors.VisualsInteractor
@@ -13,14 +12,10 @@ import com.fullstack.catawiki.repositories.VisualsRepositoryImpl
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import io.reactivex.Single
-import io.reactivex.android.plugins.RxAndroidPlugins
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -43,14 +38,13 @@ class NetworkStorageModule {
     @Provides
     @Singleton
     fun provideRxCatawikiApi():RxCatawikiApi {
-        val retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
             .baseUrl(Constants.URL_API)
             .client(createAuthV2OkHttp3Client())
             .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
-        return  retrofit.create(RxCatawikiApi::class.java)
-    }
+            .create(RxCatawikiApi::class.java)
+     }
 
     fun createAuthV2OkHttp3Client(): OkHttpClient {
         val builder = OkHttpClient.Builder()
