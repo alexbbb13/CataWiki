@@ -1,3 +1,5 @@
+# CataWiki
+
 A test CataWiki app created with reactive streams architecture using Single Activity approach,
 Clean Architecture elements, and Dagger2+RxJava+Kotlin+Moxy.
 
