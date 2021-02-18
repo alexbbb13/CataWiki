@@ -1,7 +1,7 @@
 # CataWiki
 
 A test CataWiki app created with reactive streams architecture using Single Activity approach,
-Clean Architecture elements, and Dagger2+RxJava+Kotlin+Moxy.
+Clean Architecture elements, and Dagger2+Coroutines+Kotlin+Moxy.
 
 All the view logic is located in Presenters
 All business logic and stream data transformations are located in Interactors and Repositories
