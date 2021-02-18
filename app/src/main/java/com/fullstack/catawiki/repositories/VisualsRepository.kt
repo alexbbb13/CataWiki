@@ -5,5 +5,5 @@ import com.fullstack.catawiki.models.CatResponseItem
 
 interface VisualsRepository {
     suspend fun getAllVisuals(): List<CatResponseItem>
-    suspend fun getOneVisual(catId: String): CatImageResponse
+    suspend fun getOneVisual(catId: String): CatImageResponse?
 }

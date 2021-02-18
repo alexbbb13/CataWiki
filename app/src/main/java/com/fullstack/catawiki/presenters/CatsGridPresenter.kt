@@ -1,11 +1,11 @@
 package com.fullstack.catawiki.presenters
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import com.fullstack.catawiki.api.ResultWrapper
 import com.fullstack.catawiki.fragments.CatsGridFragment
 import com.fullstack.catawiki.fragments.CatsGridView
 import com.fullstack.catawiki.interactors.VisualsInteractor
 import com.fullstack.catawiki.models.CatItem
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
@@ -24,14 +24,14 @@ class CatsGridPresenter constructor(val interactor: VisualsInteractor) : MvpPres
     }
 
     fun loadImages(fragment: CatsGridFragment) {
-                        viewState.setProgressBarVisibility(true)
-        GlobalScope.launch {
+        viewState.setProgressBarVisibility(true)
+        fragment.lifecycleScope.launch {
             val result = interactor.getAllVisuals()
             when(result) {
                 is ResultWrapper.Success -> viewState.setData(result.value)
                 is ResultWrapper.GenericError -> onServerError(result.throwable)
                 is ResultWrapper.NetworkError -> onNetworkError()
-            }
+            }.also { viewState.setProgressBarVisibility(false) }
         }
      }
 

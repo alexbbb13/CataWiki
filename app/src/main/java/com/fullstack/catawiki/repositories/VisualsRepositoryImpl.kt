@@ -7,10 +7,10 @@ import com.fullstack.catawiki.providers.CatNetworkProvider
 
 class VisualsRepositoryImpl(val catNetworkProvider: CatNetworkProvider):VisualsRepository {
     override suspend fun getAllVisuals(): List<CatResponseItem> {
-        return catNetworkProvider.getAllVisuals()
+        return catNetworkProvider.getAllVisuals()?:emptyList()
     }
 
-    override suspend fun getOneVisual(catId: String): CatImageResponse {
+    override suspend fun getOneVisual(catId: String): CatImageResponse? {
         return catNetworkProvider.getOneVisual(catId)
     }
 }

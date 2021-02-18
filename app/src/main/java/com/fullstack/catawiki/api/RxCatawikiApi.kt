@@ -11,9 +11,9 @@ interface RxCatawikiApi {
 
     @Headers("Content-Type: application/json")
     @GET("v1/breeds")
-    suspend fun getAllVisuals(): List<CatResponseItem>
+    suspend fun getAllVisuals(): Response<List<CatResponseItem>>
 
     @Headers("Content-Type: application/json")
     @GET("v1/images/{image_id}")
-    suspend fun getOneVisual(@Path("image_id") catId:String): CatImageResponse
+    suspend fun getOneVisual(@Path("image_id") catId:String): Response<CatImageResponse>
 }

@@ -11,12 +11,14 @@ import kotlinx.coroutines.Dispatchers
 
 class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, private val localCache: LocalCache) : VisualsInteractor {
 
-    override suspend fun getOneVisual(catId: String): ResultWrapper<CatItem> {
-        return safeApiCall(Dispatchers.IO, { dtoToData(repositoryVisuals.getOneVisual(catId))} )
+    override suspend fun getOneVisual(catId: String): ResultWrapper<CatItem?> {
+        return safeApiCall(Dispatchers.IO, {
+            dtoToData(repositoryVisuals.getOneVisual(catId))
+        } )
         }
 
     override suspend fun getAllVisuals(): ResultWrapper<List<CatItem>> {
-        localCache.cachedCats?.let {return ResultWrapper.Success<List<CatItem>>(it)}
+        localCache.cachedCats?.let {return ResultWrapper.Success(it)}
         val dtoToData: List<CatItem> = dtoToData(repositoryVisuals.getAllVisuals())
         localCache.setCatItems(dtoToData)
         return safeApiCall(Dispatchers.IO, {
@@ -34,7 +36,8 @@ class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, pr
         }
     }
 
-    private fun dtoToData(catImageResponse: CatImageResponse): CatItem {
+    private fun dtoToData(catImageResponse: CatImageResponse?): CatItem? {
+        if(catImageResponse == null) return null
         return CatItem(
                 catImageResponse.id,
                 catImageResponse.breeds[0].name,

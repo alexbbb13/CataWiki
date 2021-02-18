@@ -5,5 +5,5 @@ import com.fullstack.catawiki.models.CatItem
 
 interface VisualsInteractor {
     suspend fun getAllVisuals(): ResultWrapper<List<CatItem>>
-    suspend fun getOneVisual(catId: String): ResultWrapper<CatItem>
+    suspend fun getOneVisual(catId: String): ResultWrapper<CatItem?>
 }
