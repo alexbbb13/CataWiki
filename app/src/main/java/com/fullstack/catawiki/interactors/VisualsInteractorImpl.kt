@@ -1,24 +1,29 @@
 package com.fullstack.catawiki.interactors
 
+import com.fullstack.catawiki.api.ResultWrapper
+import com.fullstack.catawiki.api.safeApiCall
 import com.fullstack.catawiki.models.CatImageResponse
 import com.fullstack.catawiki.models.CatItem
 import com.fullstack.catawiki.models.CatResponseItem
 import com.fullstack.catawiki.providers.LocalCache
 import com.fullstack.catawiki.repositories.VisualsRepository
-import io.reactivex.Observable
+import kotlinx.coroutines.Dispatchers
 
 class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, private val localCache: LocalCache) : VisualsInteractor {
 
-    override fun getOneVisual(catId: String): Observable<CatItem> {
-        return repositoryVisuals.getOneVisual(catId)
-                .map { list -> dtoToData(list) }
+    override suspend fun getOneVisual(catId: String): ResultWrapper<CatItem?> {
+        return safeApiCall(Dispatchers.IO, {
+            dtoToData(repositoryVisuals.getOneVisual(catId))
+        } )
         }
 
-    override fun getAllVisuals(): Observable<List<CatItem>> {
-        if (localCache.isNotEmpty()) return Observable.just(localCache.cachedCats)
-        return repositoryVisuals.getAllVisuals()
-            .map { list -> dtoToData(list) }
-            .doOnNext { localCache.setCatItems(it) }
+    override suspend fun getAllVisuals(): ResultWrapper<List<CatItem>> {
+        localCache.cachedCats?.let {return ResultWrapper.Success(it)}
+        val dtoToData: List<CatItem> = dtoToData(repositoryVisuals.getAllVisuals())
+        localCache.setCatItems(dtoToData)
+        return safeApiCall(Dispatchers.IO, {
+            dtoToData
+        })
     }
 
     private fun dtoToData(catsList: List<CatResponseItem>): List<CatItem> {
@@ -31,7 +36,8 @@ class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, pr
         }
     }
 
-    private fun dtoToData(catImageResponse: CatImageResponse): CatItem {
+    private fun dtoToData(catImageResponse: CatImageResponse?): CatItem? {
+        if(catImageResponse == null) return null
         return CatItem(
                 catImageResponse.id,
                 catImageResponse.breeds[0].name,

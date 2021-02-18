@@ -4,10 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import dagger.Lazy
 import dagger.Module
 import dagger.Provides
-import io.reactivex.Single
 import javax.inject.Singleton
 
 @Module

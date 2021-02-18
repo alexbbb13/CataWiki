@@ -59,7 +59,7 @@ class CatInfoFragment : BaseFragment(), CatInfoView {
         progressBar = root.findViewById(R.id.progress_bar)
         catTitle = root.findViewById(R.id.tv_cat_name)
         catDescription = root.findViewById(R.id.tv_cat_description)
-        presenter.loadImages(arguments?.getSerializable(ARGS) as Arguments)
+        presenter.loadImages(this, arguments?.getSerializable(ARGS) as Arguments)
         // Find the toolbar view inside the activity layout
         toolbar = root.findViewById(R.id.toolbar) as Toolbar
         // Sets the Toolbar to act as the ActionBar for this Activity window.
