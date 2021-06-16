@@ -5,5 +5,3 @@ import javax.inject.Qualifier
 @Qualifier
 annotation class ApplicationScope
 
-@Qualifier
-annotation class ApplicationContext

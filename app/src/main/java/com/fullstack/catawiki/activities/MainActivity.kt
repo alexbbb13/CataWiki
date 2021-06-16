@@ -7,13 +7,14 @@ import com.fullstack.catawiki.R
 import com.fullstack.catawiki.base.BaseFragment
 import com.fullstack.catawiki.fragments.CatsGridFragment
 
-import dagger.android.support.DaggerAppCompatActivity
 import android.R.attr.data
 import android.os.Handler
 import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class MainActivity : DaggerAppCompatActivity() {
+@AndroidEntryPoint()
+class MainActivity : AppCompatActivity() {
 
     private lateinit var frameLayout: FrameLayout
     var currentState: Int = BaseFragment.FRAGMENT_CAT_GRID

@@ -4,17 +4,17 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
+@InstallIn(FragmentComponent::class)
 class AppModule {
-
-    @ApplicationContext
-    @Provides
-    @Singleton
-    fun provideApplicationContext(application: Application): Context = application.applicationContext
 
     @Provides
     @Singleton
@@ -36,37 +36,4 @@ class AppModule {
 //        return Single.fromCallable { appRoomLazy.get() }
 //    }
 
-    /**
-     * Если Module абстрактный:
-     * Пользуемся аннотацией @Binds
-     * Dagger 2 позволяет нам предоставлять зависимости без наличия @Provides методов.
-     * Это достигается путем наличия @Inject над конструктором у класса, который нам необходимо создать.
-     *
-     * Например:
-     * @Binds
-     * @Singleton
-     * abstract fun bindContext(application: Application): Context
-     *
-     * @Binds
-     * abstract fun bindErrorMessageFactory(errorMessageFactory: ErrorMessageImpl): ErrorMessage
-     *
-     * Используем @Provides только для статических методов:
-     *
-     * @Module
-     * companion object {
-     *     @JvmStatic
-     *     @Provides
-     *     fun provideContext(application: Application): Context = application.applicationContext
-     * }
-     *
-     *
-     *
-     * If Module is not abstract:
-     * @Provides
-     * @Singleton
-     * fun provideApplicationContext(application: Application): Context = application.applicationContext
-     *
-     * @Provides
-     * fun provideErrorMessageFactory(context: Context): ErrorMessage = ErrorMessageImpl(context)
-     */
 }

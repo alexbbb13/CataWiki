@@ -14,12 +14,13 @@ import com.fullstack.catawiki.extensions.toVisibility
 import com.fullstack.catawiki.models.CatItem
 import com.fullstack.catawiki.presenters.CatsGridPresenter
 import com.fullstack.catawiki.views.MyGridLayoutManager
-import dagger.android.support.AndroidSupportInjection
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 import javax.inject.Provider
 
+@AndroidEntryPoint
 class CatsGridFragment: BaseFragment(), CatsGridView {
 
     @Inject
@@ -40,9 +41,12 @@ class CatsGridFragment: BaseFragment(), CatsGridView {
     lateinit var recyclerView: RecyclerView
     lateinit var progressBar: ProgressBar
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        AndroidSupportInjection.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
