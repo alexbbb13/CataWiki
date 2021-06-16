@@ -1,11 +1,14 @@
 package com.fullstack.catawiki
 
-import com.fullstack.catawiki.di.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class BaseApplication:  DaggerApplication() {
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder().application(this).build();
+@HiltAndroidApp
+class BaseApplication:  Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        //Timber.plant(Timber.DebugTree())
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 }

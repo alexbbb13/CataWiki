@@ -21,13 +21,14 @@ import com.fullstack.catawiki.extensions.toVisibility
 import com.fullstack.catawiki.models.CatItem
 import com.fullstack.catawiki.presenters.CatInfoPresenter
 import com.fullstack.catawiki.views.MyGridLayoutManager
-import dagger.android.support.AndroidSupportInjection
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
 import java.io.Serializable
 import javax.inject.Inject
 import javax.inject.Provider
 
+@AndroidEntryPoint
 class CatInfoFragment : BaseFragment(), CatInfoView {
 
     @Inject
@@ -50,7 +51,10 @@ class CatInfoFragment : BaseFragment(), CatInfoView {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        AndroidSupportInjection.inject(this)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

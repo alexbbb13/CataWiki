@@ -12,6 +12,8 @@ import com.fullstack.catawiki.repositories.VisualsRepositoryImpl
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,24 +21,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
+@InstallIn(FragmentComponent::class)
 class NetworkStorageModule {
 
     @Provides
-    @Singleton
     fun provideVisualsInteractor(repo:VisualsRepository, localCache: LocalCache): VisualsInteractor
             = VisualsInteractorImpl(repo, localCache)
 
     @Provides
-    @Singleton
     fun provideVisualsRepository(provider:CatNetworkProvider): VisualsRepository
             = VisualsRepositoryImpl(provider)
 
     @Provides
-    @Singleton
     fun provideNetworkProvider(api:RxCatawikiApi): CatNetworkProvider = CatNetworkProvider(api)
 
     @Provides
-    @Singleton
     fun provideRxCatawikiApi():RxCatawikiApi {
         return Retrofit.Builder()
             .baseUrl(Constants.URL_API)

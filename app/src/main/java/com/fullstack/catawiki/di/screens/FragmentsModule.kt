@@ -5,8 +5,11 @@ import com.fullstack.catawiki.presenters.CatInfoPresenter
 import com.fullstack.catawiki.presenters.CatsGridPresenter
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.FragmentComponent
 
 @Module
+@InstallIn(FragmentComponent::class)
 class FragmentsModule {
 
     @Provides
