@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CataWiki</string>
+    <string name="network_not_available">No Internet Connection</string>
 </resources>

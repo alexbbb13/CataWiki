@@ -7,6 +7,7 @@ import com.fullstack.catawiki.models.CatItem
 import com.fullstack.catawiki.models.CatResponseItem
 import com.fullstack.catawiki.providers.LocalCache
 import com.fullstack.catawiki.repositories.VisualsRepository
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.Dispatchers
 
 class VisualsInteractorImpl(private val repositoryVisuals: VisualsRepository, private val localCache: LocalCache) : VisualsInteractor {

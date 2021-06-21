@@ -10,10 +10,14 @@ import com.fullstack.catawiki.providers.LocalCache
 import com.fullstack.catawiki.repositories.VisualsRepository
 import com.fullstack.catawiki.repositories.VisualsRepositoryImpl
 import com.google.gson.Gson
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,12 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(FragmentComponent::class)
+@InstallIn(SingletonComponent::class)
 class NetworkStorageModule {
-
-    @Provides
-    fun provideVisualsInteractor(repo:VisualsRepository, localCache: LocalCache): VisualsInteractor
-            = VisualsInteractorImpl(repo, localCache)
 
     @Provides
     fun provideVisualsRepository(provider:CatNetworkProvider): VisualsRepository

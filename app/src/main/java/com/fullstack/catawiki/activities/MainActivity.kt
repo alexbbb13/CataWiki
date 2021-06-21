@@ -17,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var frameLayout: FrameLayout
-    var currentState: Int = BaseFragment.FRAGMENT_CAT_GRID
     var shouldExit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
