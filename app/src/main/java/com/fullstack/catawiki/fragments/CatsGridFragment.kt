@@ -45,7 +45,7 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.cats_grid_fragment, container, false)
-        binding = CatsGridFragmentBinding.inflate(inflater, container, false)
+        //binding = CatsGridFragmentBinding.inflate(inflater, container, false)
         viewManager = MyGridLayoutManager(requireContext(), 2)
         Log.d("doxxxtor", "Cat GridFragment viewModel.init(null)")
         viewModel.init(null)
@@ -68,6 +68,12 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
         return root
     }
 
+//    fun setData(pics: List<CatItem>) {
+//        binding.adapter = CatsListAdapter()
+//        binding.adapter!!.submitList(pics)
+//        binding.executePendingBindings()
+//    }
+
      fun setData(pics: List<CatItem>) {
         this.apply {
               pictureGridAdapter = PictureGridAdapter(pics,
@@ -78,11 +84,9 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
                         }
 
                         override fun onItemClick(position: Int) {
-                            TODO("Replace by viewmodel")
                             viewModel.startViewImage(pics[position], activity?.supportFragmentManager)
                         }
                     })
-               // binding.progressBar.visibility = View.INVISIBLE
                 recyclerView.apply {
                     setHasFixedSize(true)
                     layoutManager = viewManager

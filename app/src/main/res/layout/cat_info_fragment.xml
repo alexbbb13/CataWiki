@@ -80,7 +80,7 @@
                             android:ellipsize="end"
                             android:textStyle="bold"
                             tools:text="Cat Name"
-                            android:text="{@catInfo.}"
+                            android:text="@{catInfo.catName}"
                             app:layout_constraintVertical_chainStyle="packed"
                             android:textColor="@color/subtitle_text" />
 
@@ -98,6 +98,7 @@
                             app:layout_constraintRight_toRightOf="parent"
                             android:lineSpacingExtra="3dp"
                             android:textSize="18dp"
+                            android:text="@{catInfo.catDetails}"
                             tools:text="Cat description bla-bla-bla bla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-blabla-bla-bla"
                             app:layout_constraintVertical_chainStyle="packed"
                             android:textColor="@color/description_text" />

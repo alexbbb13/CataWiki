@@ -1,6 +1,7 @@
 package com.fullstack.catawiki.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.Serializable
 
 @AndroidEntryPoint
-class CatInfoFragment : BaseFragment<CatInfoViewModel, CatInfoFragmentBinding>(), CatInfoView {
+class CatInfoFragment : BaseFragment<CatInfoViewModel, CatInfoFragmentBinding>() {
 
     lateinit var toolbar: Toolbar
     override val viewModel: CatInfoViewModel by viewModels()
@@ -32,54 +33,35 @@ class CatInfoFragment : BaseFragment<CatInfoViewModel, CatInfoFragmentBinding>()
     ) = CatInfoFragmentBinding.inflate(inflater, container, false)
 
     override fun initView(view: View, savedInstanceState: Bundle?) {
-        toolbar = binding.root.findViewById(R.id.toolbar) as Toolbar
-        toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.cat_info_fragment, container, false)
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        //val root = inflater.inflate(R.layout.cat_info_fragment, container, false)
+
         // Find the toolbar view inside the activity layout
-        toolbar = root.findViewById(R.id.toolbar) as Toolbar
+        toolbar = root?.findViewById(R.id.toolbar) as Toolbar
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
-          viewModel.init(arguments)
-          viewModel.catResult.observe(this.viewLifecycleOwner, Observer<ResultWrapper<CatItem?>> { catResultWrapper ->
-              when (catResultWrapper) {
-                  is ResultWrapper.Success -> {
-                      catResultWrapper.value?.let {
-                          setCatPicUrl(it.pictureUrl!!)
-                          setCatName(it.name)
-                          setCatInfo(it.description)
-                      }
-                  }
-                  is ResultWrapper.GenericError -> onServerError(catResultWrapper.throwable)
-                  is ResultWrapper.NetworkError -> onNetworkError(root.findViewById(R.id.coordinatorLayout))
+        viewModel.init(arguments)
 
-              }
-          })
+        viewModel.catName.observe(viewLifecycleOwner, Observer<String> { name ->
+            binding.tvCatName.text = name
+            toolbar.title = name
+        })
+
+        viewModel.catDetails.observe(viewLifecycleOwner, Observer<String> { name ->
+            binding.tvCatDescription.text = name
+        })
+
+        viewModel.catPicUrl.observe(viewLifecycleOwner, Observer<String> { name ->
+            Glide.with(binding.ivCat).load(name).into(binding.ivCat)
+        })
+
         return root
-    }
-
-    override fun setCatPicUrl(url: String) {
-        Glide.with(binding.ivCat).load(url).into(binding.ivCat)
-    }
-
-    override fun setCatName(name: String) {
-        binding.tvCatName.text = name
-        toolbar.title = name
-    }
-
-    override fun setCatInfo(info: String) {
-        binding.tvCatDescription.text = info
-    }
-
-    override fun setProgressBarVisibility(visible: Boolean) {
-        //progressBar.visibility = visible.toVisibility()
     }
 
     companion object {
