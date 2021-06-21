@@ -11,7 +11,7 @@ import com.fullstack.catawiki.R
 import com.fullstack.catawiki.models.CatItem
 
 
-class PictureGridAdapter(val myDataset: MutableList<CatItem>, val listener: ItemClickListener) :
+class PictureGridAdapter(val myDataset: List<CatItem>, val listener: ItemClickListener) :
     RecyclerView.Adapter<PictureGridAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnLongClickListener, View.OnClickListener {
@@ -37,7 +37,7 @@ class PictureGridAdapter(val myDataset: MutableList<CatItem>, val listener: Item
         viewType: Int
     ): MyViewHolder {
         val root: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.picture_grid_item_type_image, parent, false)
+            .inflate(R.layout.picture_grid_image, parent, false)
         return MyViewHolder(root)
     }
 
@@ -56,6 +56,5 @@ class PictureGridAdapter(val myDataset: MutableList<CatItem>, val listener: Item
      interface ItemClickListener {
         fun onItemLongClick(position: Int)
         fun onItemClick(position: Int)
-        fun onTagsCounterClick(position: Int)
     }
 }

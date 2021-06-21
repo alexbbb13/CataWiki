@@ -24,7 +24,7 @@ abstract class BaseViewModel :  ViewModel(), CoroutineScope {
         coroutineContext.cancelChildren()
     }
 
-    abstract fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    abstract fun init(arguments: Bundle?)
 
 //    fun onDefContext(block: () -> Unit) = launch {
 //        withContext(Dispatchers.IO) {

@@ -38,11 +38,7 @@ class CatInfoFragment : BaseFragment<CatInfoViewModel, CatInfoFragmentBinding>()
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.onViewCreated(view, arguments)
-    }
-      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.cat_info_fragment, container, false)
         // Find the toolbar view inside the activity layout
         toolbar = root.findViewById(R.id.toolbar) as Toolbar
@@ -51,6 +47,7 @@ class CatInfoFragment : BaseFragment<CatInfoViewModel, CatInfoFragmentBinding>()
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
+          viewModel.init(arguments)
           viewModel.catResult.observe(this.viewLifecycleOwner, Observer<ResultWrapper<CatItem?>> { catResultWrapper ->
               when (catResultWrapper) {
                   is ResultWrapper.Success -> {

@@ -32,7 +32,6 @@ abstract class BaseFragment<VM : BaseViewModel, VB: ViewBinding> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initView(view, savedInstanceState)
-        viewModel.onViewCreated(view, savedInstanceState)
     }
 
     interface FragmentStateListener{

@@ -8,6 +8,4 @@ import moxy.viewstate.strategy.StateStrategyType
 interface CatsGridView : MvpView {
     fun setData(pics: List<CatItem>)
     fun setProgressBarVisibility(visible: Boolean)
-    @StateStrategyType(OneExecutionStateStrategy::class)
-    fun startViewImage(id: String)
 }

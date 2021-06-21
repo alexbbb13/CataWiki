@@ -1,15 +1,21 @@
 package com.fullstack.catawiki.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.fullstack.catawiki.R
+import com.fullstack.catawiki.adapters.CatsListAdapter
 import com.fullstack.catawiki.adapters.PictureGridAdapter
+import com.fullstack.catawiki.api.ResultWrapper
 import com.fullstack.catawiki.base.BaseFragment
 import com.fullstack.catawiki.databinding.CatInfoFragmentBinding
 import com.fullstack.catawiki.databinding.CatsGridFragmentBinding
@@ -20,42 +26,51 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Provider
 
 @AndroidEntryPoint
-class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(), CatsGridView {
+class CatsGridFragment: Fragment() /*BaseFragment<CatGridViewModel, CatsGridFragmentBinding>()*/ {
 
-    private lateinit var pictureGridAdapter: PictureGridAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var pictureGridAdapter: PictureGridAdapter
+    private lateinit var recyclerView: RecyclerView
 
-    lateinit var recyclerView: RecyclerView
-    lateinit var progressBar: ProgressBar
+    val viewModel: CatGridViewModel by viewModels()
+    lateinit var binding: CatsGridFragmentBinding
 
-    override val viewModel: CatGridViewModel by viewModels()
-
-    override fun initBinding(
-        inflater: LayoutInflater,
-        container: ViewGroup?
-    ) = CatsGridFragmentBinding.inflate(inflater, container, false)
-
-    override fun initView(view: View, savedInstanceState: Bundle?) {
-//        toolbar = binding.root.findViewById(R.id.toolbar) as Toolbar
-//        toolbar.setNavigationOnClickListener {
-//            activity?.onBackPressed()
-//        }
-    }
+//    override fun initBinding(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?
+//    ) = CatsGridFragmentBinding.inflate(inflater, container, false)
+//
+//    override fun initView(view: View, savedInstanceState: Bundle?) {
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.cats_grid_fragment, container, false)
-        recyclerView = root.findViewById(R.id.pictures_grid)
-        progressBar = root.findViewById(R.id.progress_bar)
+        binding = CatsGridFragmentBinding.inflate(inflater, container, false)
         viewManager = MyGridLayoutManager(requireContext(), 2)
-        //presenter.loadImages(this)
+        Log.d("doxxxtor", "Cat GridFragment viewModel.init(null)")
+        viewModel.init(null)
+        viewModel.catListResult.observe(viewLifecycleOwner, Observer<ResultWrapper<List<CatItem>>> { catListResultWrapper ->
+            when (catListResultWrapper) {
+                is ResultWrapper.Success -> {
+                    catListResultWrapper.value?.let {
+//                        binding.adapter = CatsListAdapter()
+//                        it.let((binding.adapter as CatsListAdapter)::submitList)
+                        Log.d("doxxtor", "Set data size = "+it.size)
+                        setData(it)
+                        //binding.adapter!!.notifyDataSetChanged()//submitList(it)// = catsListAdapter
+                    }
+                }
+                is ResultWrapper.GenericError -> {catListResultWrapper.throwable.printStackTrace()}//onServerError(catListResultWrapper.throwable)
+                is ResultWrapper.NetworkError -> /*onNetworkError(root.findViewById(R.id.coordinatorLayout))*/{}
+            }
+        })
+        recyclerView = root.findViewById(R.id.pictures_grid)
         return root
     }
 
-     override fun setData(pics: List<CatItem>) {
+     fun setData(pics: List<CatItem>) {
         this.apply {
-            activity?.let{
-                val data = pics.toMutableList()
-                pictureGridAdapter = PictureGridAdapter(data,
+              pictureGridAdapter = PictureGridAdapter(pics,
                     object :PictureGridAdapter.ItemClickListener{
                         override fun onItemLongClick(position: Int) {
                             //presenter.notifyStatusChanged(position, data[position], !data[position].isSelected)
@@ -64,39 +79,23 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
 
                         override fun onItemClick(position: Int) {
                             TODO("Replace by viewmodel")
-                            //presenter.onItemClick(data[position])
-                        }
-
-                        override fun onTagsCounterClick(position: Int) {
-                            //presenter.onTagsCounterClick(data[position])
+                            viewModel.startViewImage(pics[position], activity?.supportFragmentManager)
                         }
                     })
+               // binding.progressBar.visibility = View.INVISIBLE
                 recyclerView.apply {
-                    // use this setting to improve performance if you know that changes
-                    // in content do not change the layout size of the RecyclerView
                     setHasFixedSize(true)
-
-                    // use a linear layout manager
                     layoutManager = viewManager
-
-                    // specify an viewAdapter (see also next example)
                     adapter = pictureGridAdapter
                 }
+            //binding.executePendingBindings()
             }
 
         }
-    }
-
-    override fun setProgressBarVisibility(visible: Boolean) {
-        progressBar.visibility = visible.toVisibility()
-    }
-
-    override fun startViewImage(catId: String) {
-        activity?.let {
-            it.supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, CatInfoFragment.getInstance(catId))
-                .addToBackStack("cat_image")
-                .commit()
-        }
-    }
 }
+//
+//    override fun setProgressBarVisibility(visible: Boolean) {
+//        progressBar.visibility = visible.toVisibility()
+//    }
+
+

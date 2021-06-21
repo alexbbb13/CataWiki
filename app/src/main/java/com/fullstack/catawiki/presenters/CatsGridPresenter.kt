@@ -34,8 +34,4 @@ class CatsGridPresenter constructor(val interactor: VisualsInteractor) : MvpPres
             }.also { viewState.setProgressBarVisibility(false) }
         }
      }
-
-    fun onItemClick(item: CatItem) {
-        viewState.startViewImage(item.id)
-    }
 }
