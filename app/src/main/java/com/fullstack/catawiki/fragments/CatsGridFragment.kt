@@ -26,22 +26,22 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Provider
 
 @AndroidEntryPoint
-class CatsGridFragment: Fragment() /*BaseFragment<CatGridViewModel, CatsGridFragmentBinding>()*/ {
+class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var pictureGridAdapter: PictureGridAdapter
     private lateinit var recyclerView: RecyclerView
 
-    val viewModel: CatGridViewModel by viewModels()
-    lateinit var binding: CatsGridFragmentBinding
+    override val viewModel: CatGridViewModel by viewModels()
+    //lateinit var binding: CatsGridFragmentBinding
 
-//    override fun initBinding(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?
-//    ) = CatsGridFragmentBinding.inflate(inflater, container, false)
-//
-//    override fun initView(view: View, savedInstanceState: Bundle?) {
-//    }
+    override fun initBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = CatsGridFragmentBinding.inflate(inflater, container, false)
+
+    override fun initView(view: View, savedInstanceState: Bundle?) {
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.cats_grid_fragment, container, false)
