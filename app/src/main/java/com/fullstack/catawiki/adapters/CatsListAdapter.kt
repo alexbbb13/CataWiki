@@ -12,7 +12,6 @@ import com.fullstack.catawiki.models.CatItem
 
 
 class CatsListAdapter : ListAdapter<CatItem, CatsListAdapter.CatViewHolder>(Companion) {
-    //class CatViewHolder(val binding: CatItemBinding) : RecyclerView.ViewHolder(binding.root)
     class CatViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var binding: CatItemBinding?
 

@@ -1,29 +1,20 @@
 package com.fullstack.catawiki.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.fullstack.catawiki.R
-import com.fullstack.catawiki.adapters.CatsListAdapter
 import com.fullstack.catawiki.adapters.PictureGridAdapter
 import com.fullstack.catawiki.api.ResultWrapper
 import com.fullstack.catawiki.base.BaseFragment
-import com.fullstack.catawiki.databinding.CatInfoFragmentBinding
 import com.fullstack.catawiki.databinding.CatsGridFragmentBinding
-import com.fullstack.catawiki.extensions.toVisibility
 import com.fullstack.catawiki.models.CatItem
 import com.fullstack.catawiki.views.MyGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Provider
 
 @AndroidEntryPoint
 class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>() {
