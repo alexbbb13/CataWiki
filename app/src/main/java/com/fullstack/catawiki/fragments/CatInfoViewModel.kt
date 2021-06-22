@@ -51,9 +51,6 @@ class CatInfoViewModel @Inject constructor(private val interactor:VisualsInterac
             ""
         }
     })
-//    val catName:MutableLiveData<String> = MutableLiveData<String>()
-//    val catPicUrl:MutableLiveData<String> = MutableLiveData<String>()
-//    val catDetails:MutableLiveData<String> = MutableLiveData<String>()
 
     override fun init(arguments: Bundle?) {
         arguments?.let {
@@ -62,11 +59,7 @@ class CatInfoViewModel @Inject constructor(private val interactor:VisualsInterac
                     val result = interactor.getOneVisual(catId)
                     when(result) {
                         is ResultWrapper.Success -> {
-                            Log.d("doxxxtor", "CatResult post value")
                             _catResult.postValue(result)
-//                            catName.postValue(result.value!!.name)
-//                            catPicUrl.postValue(result.value!!.pictureUrl)
-//                            catDetails.postValue(result.value!!.description)
                         }
                     }
                     //_showProgress.postValue(false)

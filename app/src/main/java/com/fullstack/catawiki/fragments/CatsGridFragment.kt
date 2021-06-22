@@ -33,7 +33,6 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
     private lateinit var recyclerView: RecyclerView
 
     override val viewModel: CatGridViewModel by viewModels()
-    //lateinit var binding: CatsGridFragmentBinding
 
     override fun initBinding(
         inflater: LayoutInflater,
@@ -45,42 +44,28 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.cats_grid_fragment, container, false)
-        //binding = CatsGridFragmentBinding.inflate(inflater, container, false)
         viewManager = MyGridLayoutManager(requireContext(), 2)
-        Log.d("doxxxtor", "Cat GridFragment viewModel.init(null)")
         viewModel.init(null)
         viewModel.catListResult.observe(viewLifecycleOwner, Observer<ResultWrapper<List<CatItem>>> { catListResultWrapper ->
             when (catListResultWrapper) {
                 is ResultWrapper.Success -> {
                     catListResultWrapper.value?.let {
-//                        binding.adapter = CatsListAdapter()
-//                        it.let((binding.adapter as CatsListAdapter)::submitList)
-                        Log.d("doxxtor", "Set data size = "+it.size)
                         setData(it)
-                        //binding.adapter!!.notifyDataSetChanged()//submitList(it)// = catsListAdapter
                     }
                 }
                 is ResultWrapper.GenericError -> {catListResultWrapper.throwable.printStackTrace()}//onServerError(catListResultWrapper.throwable)
-                is ResultWrapper.NetworkError -> /*onNetworkError(root.findViewById(R.id.coordinatorLayout))*/{}
+                is ResultWrapper.NetworkError -> onNetworkError(root!!.findViewById(R.id.coordinatorLayout))
             }
         })
-        recyclerView = root.findViewById(R.id.pictures_grid)
+        recyclerView = root!!.findViewById(R.id.pictures_grid)
         return root
     }
-
-//    fun setData(pics: List<CatItem>) {
-//        binding.adapter = CatsListAdapter()
-//        binding.adapter!!.submitList(pics)
-//        binding.executePendingBindings()
-//    }
 
      fun setData(pics: List<CatItem>) {
         this.apply {
               pictureGridAdapter = PictureGridAdapter(pics,
                     object :PictureGridAdapter.ItemClickListener{
                         override fun onItemLongClick(position: Int) {
-                            //presenter.notifyStatusChanged(position, data[position], !data[position].isSelected)
-                            // pictureGridAdapter.notifyItemChanged(position)
                         }
 
                         override fun onItemClick(position: Int) {
@@ -92,14 +77,9 @@ class CatsGridFragment: BaseFragment<CatGridViewModel, CatsGridFragmentBinding>(
                     layoutManager = viewManager
                     adapter = pictureGridAdapter
                 }
-            //binding.executePendingBindings()
             }
 
         }
 }
-//
-//    override fun setProgressBarVisibility(visible: Boolean) {
-//        progressBar.visibility = visible.toVisibility()
-//    }
 
 

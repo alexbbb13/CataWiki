@@ -36,7 +36,6 @@ class CatGridViewModel @Inject constructor(private val interactor:VisualsInterac
 
     override fun init(arguments: Bundle?) {
              viewModelScope.launch {
-                 Log.d("doxxxtor", "ViewModelScope launches coroutine")
                  catListResult.value = interactor.getAllVisuals()
                  _showProgress.postValue(false)
             }
