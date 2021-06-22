@@ -26,33 +26,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkStorageModule {
+class RepositoriesModule {
 
     @Provides
-    fun provideNetworkProvider(api:RxCatawikiApi): CatNetworkProvider = CatNetworkProvider(api)
-
-    @Provides
-    fun provideRxCatawikiApi():RxCatawikiApi {
-        return Retrofit.Builder()
-            .baseUrl(Constants.URL_API)
-            .client(createAuthV2OkHttp3Client())
-            .addConverterFactory(GsonConverterFactory.create(Gson()))
-            .build()
-            .create(RxCatawikiApi::class.java)
-     }
-
-    fun createAuthV2OkHttp3Client(): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-            .addInterceptor(AccessTokenInterceptor())
-            .addNetworkInterceptor(provideLoggingInterceptor())
-
-        return builder.build()
-    }
-
-    private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return interceptor
-    }
+    fun provideVisualsRepository(provider:CatNetworkProvider): VisualsRepository
+            = VisualsRepositoryImpl(provider)
 }
 

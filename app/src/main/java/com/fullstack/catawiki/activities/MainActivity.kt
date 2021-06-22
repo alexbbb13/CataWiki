@@ -17,17 +17,26 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var frameLayout: FrameLayout
-    var currentState: Int = BaseFragment.FRAGMENT_CAT_GRID
     var shouldExit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fragment_container)
         frameLayout = findViewById(R.id.fragment_container)
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, CatsGridFragment())
-            .addToBackStack("cat_grid")
-            .commit()
+        if (savedInstanceState != null) {
+            /**making sure you are not attaching the fragments again as they have
+            been
+             *already added
+             **/
+            return;
+        }
+        else{
+            // following code to attach fragment initially
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CatsGridFragment())
+                .addToBackStack("cat_grid")
+                .commit()
+        }
     }
 
     fun notifyFragmentStateSelected(fragmentState: Int){

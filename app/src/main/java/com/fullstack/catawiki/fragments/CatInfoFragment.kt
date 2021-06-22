@@ -1,94 +1,67 @@
 package com.fullstack.catawiki.fragments
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.fullstack.catawiki.R
-import com.fullstack.catawiki.adapters.PictureGridAdapter
+import com.fullstack.catawiki.api.ResultWrapper
 import com.fullstack.catawiki.base.BaseFragment
+import com.fullstack.catawiki.databinding.CatInfoFragmentBinding
 import com.fullstack.catawiki.extensions.extraKey
-import com.fullstack.catawiki.extensions.toVisibility
 import com.fullstack.catawiki.models.CatItem
-import com.fullstack.catawiki.presenters.CatInfoPresenter
-import com.fullstack.catawiki.views.MyGridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
 import java.io.Serializable
-import javax.inject.Inject
-import javax.inject.Provider
 
 @AndroidEntryPoint
-class CatInfoFragment : BaseFragment(), CatInfoView {
+class CatInfoFragment : BaseFragment<CatInfoViewModel, CatInfoFragmentBinding>() {
 
-    @Inject
-    lateinit var presenterProvider: Provider<CatInfoPresenter>
-
-    @InjectPresenter
-    lateinit var presenter: CatInfoPresenter
-
-    @ProvidePresenter
-    fun providePresenter(): CatInfoPresenter {
-        val presenter = presenterProvider.get()
-        return presenter
-    }
-
-    lateinit var catView: ImageView
-    lateinit var catTitle: TextView
-    lateinit var catDescription: TextView
-    lateinit var progressBar: ProgressBar
     lateinit var toolbar: Toolbar
+    override val viewModel: CatInfoViewModel by viewModels()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-    }
+    override fun initBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = CatInfoFragmentBinding.inflate(inflater, container, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun initView(view: View, savedInstanceState: Bundle?) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.fragment_cat_info, container, false)
-        catView = root.findViewById(R.id.iv_cat)
-        progressBar = root.findViewById(R.id.progress_bar)
-        catTitle = root.findViewById(R.id.tv_cat_name)
-        catDescription = root.findViewById(R.id.tv_cat_description)
-        presenter.loadImages(this, arguments?.getSerializable(ARGS) as Arguments)
+        val root = super.onCreateView(inflater, container, savedInstanceState)
+        //val root = inflater.inflate(R.layout.cat_info_fragment, container, false)
+
         // Find the toolbar view inside the activity layout
-        toolbar = root.findViewById(R.id.toolbar) as Toolbar
+        toolbar = root?.findViewById(R.id.toolbar) as Toolbar
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
         toolbar.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
+        viewModel.init(arguments)
+
+        viewModel.catName.observe(viewLifecycleOwner, Observer<String> { name ->
+            binding.tvCatName.text = name
+            toolbar.title = name
+        })
+
+        viewModel.catDetails.observe(viewLifecycleOwner, Observer<String> { name ->
+            binding.tvCatDescription.text = name
+        })
+
+        viewModel.catPicUrl.observe(viewLifecycleOwner, Observer<String> { name ->
+            Glide.with(binding.ivCat).load(name).into(binding.ivCat)
+        })
+
         return root
-    }
-
-    override fun setCatPicUrl(url: String) {
-        Glide.with(catView).load(url).into(catView)
-    }
-
-    override fun setCatName(name: String) {
-        catTitle.text = name
-        toolbar.title = name
-    }
-
-    override fun setCatInfo(info: String) {
-        catDescription.text = info
-    }
-
-    override fun setProgressBarVisibility(visible: Boolean) {
-        progressBar.visibility = visible.toVisibility()
     }
 
     companion object {
